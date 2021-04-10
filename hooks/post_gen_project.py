@@ -29,4 +29,4 @@ def delete_resource(resource):
 
 if __name__ == "__main__":
     delete_resources_for_disabled_features()
-    # os.system("./setup.sh")
+    os.system("./setup.sh")

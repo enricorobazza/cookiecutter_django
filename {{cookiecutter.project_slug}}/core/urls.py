@@ -20,6 +20,6 @@ urlpatterns = [
     path('', include('main.urls')),
     {% if cookiecutter.custom_accounts == "True" -%}
     path('account/', include('account.urls')),
-    {-% endif %}
+    {%- endif %}
     path('admin/', admin.site.urls),
 ]
