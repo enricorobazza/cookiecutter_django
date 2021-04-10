@@ -1,0 +1,7 @@
+[MASTER]
+disable= C0114, C0115, C0116, # missing doc_string
+        E0213, #no-self-argument
+        C0103, #snake-case
+        E1101, #no method  named
+        C0325, #(superfluous-parens)
+        C0301, #line-too-long

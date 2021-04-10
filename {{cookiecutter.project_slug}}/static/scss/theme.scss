@@ -1,0 +1,14 @@
+// $primary:rgb(255,224,0);
+// $secondary: #061844;
+// $info: #2095EE;
+// $enable-rounded: false;
+// $dark: adjust-color(adjust-color($secondary, $blue:-30%), $lightness: -2%);
+// $gray: #dee2e6;
+
+// $theme-colors: (
+//   "info-light": adjust-color($info, $lightness: 20%)
+// );
+
+{% if cookiecutter.bootstrap == "True" -%}
+@import '../bootstrap/scss/bootstrap.scss';
+{%- endif %}

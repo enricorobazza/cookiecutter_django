@@ -1,0 +1,15 @@
+{
+    "project_name": "",
+    "project_slug": "",
+    "heroku": [true, false],
+    "bootstrap": [true, false],
+    "custom_accounts": [true, false],
+    "_copy_without_render": [
+        "./.venv/**",
+        "./.venv",
+        "./.venv/",
+        ".venv",
+        ".venv/",
+        "./static/**"
+    ]
+}

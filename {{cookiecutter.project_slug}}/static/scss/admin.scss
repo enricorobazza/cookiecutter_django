@@ -1,0 +1,68 @@
+@import './theme.scss';
+
+#header{
+  background-color: $secondary;
+  padding: 20px 40px;
+
+  #branding{
+    #site-name{
+      color: white;
+      a{
+        color: white;
+      }
+    }
+  }
+}
+
+a:link, a:visited{
+  color: $secondary;
+}
+
+.module caption{
+  background-color: $info;
+  caption-side: top;
+}
+
+div.breadcrumbs{
+  background-color: $info;
+}
+
+.submit-row {
+  input{
+    background-color: $secondary;
+  }
+
+  input:hover{
+    background-color: adjust-color(adjust-color($secondary, $lightness: 20%), $blue: -40%);
+  }
+
+  input.default{
+    background-color: $info;
+  }
+
+  input.default:hover{
+    background-color: adjust-color($info, $lightness: 15%);
+  }
+
+  font-size: 14px;
+  a.deletelink{
+    height: 35px !important;
+    background-color: $danger !important;
+
+  }
+}
+
+a.historylink:hover{
+  background: $info;
+}
+
+.selector-chosen, #changelist-filter{
+  h2{
+    background: $info !important;
+  }
+}
+
+.module h2{
+  background: $secondary;
+}
+

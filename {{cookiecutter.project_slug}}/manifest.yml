@@ -1,0 +1,15 @@
+features:
+  - name: heroku
+    enabled: {{cookiecutter.heroku|lower}}
+    resources:
+      - runtime.txt
+      - Procfile
+  - name: bootstrap
+    enabled: {{cookiecutter.bootstrap|lower}}
+    resources:
+      - static/bootstrap
+  - name: custom_accounts
+    enabled: {{cookiecutter.custom_accounts|lower}}
+    resources:
+      - account
+      - static/scss/account
