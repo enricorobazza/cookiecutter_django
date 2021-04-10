@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     {% if cookiecutter.custom_accounts == "True" %}'account',{% endif %}
+    {% if cookiecutter.extras_app == "True" %}'extras',{% endif %}
     'compressor',
     'main',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -125,6 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 {% if cookiecutter.custom_accounts == "True" %}
 AUTH_USER_MODEL = 'account.User'
 {% endif %}
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -159,6 +162,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
 
 {% if cookiecutter.login_required_middleware == "True" -%}
 LOGIN_URL = '/account/login/'

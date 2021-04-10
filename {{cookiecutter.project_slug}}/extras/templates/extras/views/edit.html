@@ -1,0 +1,23 @@
+{% raw %}
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block scss %}
+{% endblock %}
+
+{% block head %}
+    <title>Alterar Tarefa</title>
+{% endblock %}
+
+{% block body %} 
+    <div class="container mt-4">
+        <h3>Alterar Tarefa</h3>
+        <hr />
+        <form method="POST">
+            {% include "../components/form_render.html" %}
+            <button type="submit" class="btn btn-primary w-100 mt-3">Alterar</button>
+        </form>
+    </div>
+
+{% endblock %}
+{% endraw %}

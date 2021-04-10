@@ -1,0 +1,57 @@
+
+{% raw %}
+{% include 'django/forms/widgets/select.html' %}
+
+<script>
+    // value of the field
+    const {{widget.name}}_value = parseInt($("#id_{{widget.name}}").val());
+
+    // queryset of the field
+    const {{widget.name}}_queryset = JSON.parse("{{widget.queryset|escapejs}}");
+
+    $("#id_{{widget.name}}").html(`<option value="" selected="">---------</option>`);
+
+    // Function to filter the options from _queryset
+    const {{widget.name}}_filter_options = (filter, selected = null) => {
+        // Reset options to only 'empty option'
+        $("#id_{{widget.name}}").html(`<option value="" selected="">---------</option>`);
+
+        // Filters queryset
+        const filteredQuerySet = {{widget.name}}_queryset.filter(row => parseInt(row.filter) === parseInt(filter));
+
+        // Maps filtered queryset to html
+        const htmlFilteredQuerySet = filteredQuerySet.map(row => {
+            if(selected === null || row.id !== selected)
+                return `<option value="${row.id}">${row.value}</option>`;
+            else 
+                return `<option selected value="${row.id}">${row.value}</option>`;
+        })
+
+        // Append options to select
+        $("#id_{{widget.name}}").append(htmlFilteredQuerySet.join(''));
+
+        // Refresh select picker options
+        if($('#id_{{widget.name}}').hasClass('selectpicker')){
+            $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+            $('#id_{{widget.name}}').selectpicker('refresh');
+        }
+    }
+
+    // if field has a value (must select the filter field relative to selected value)
+    // (must re-filter options to the field and apply the selected value)
+    if(!isNaN({{widget.name}}_value)) {
+        const filteredRows = {{widget.name}}_queryset.filter(row => parseInt(row.id) === {{widget.name}}_value);
+        if(filteredRows.length > 0){
+            const valueRow = filteredRows[0];
+            const filterValue = valueRow.filter;
+            $("#id_{{widget.field}}").val(filterValue);
+            {{widget.name}}_filter_options(filterValue, {{widget.name}}_value);
+        }
+    }
+
+    $("#id_{{widget.field}}").on('change', (e) => {
+        {{widget.name}}_filter_options(e.target.value);
+    })
+
+</script>
+{% endraw %}

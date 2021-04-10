@@ -1,0 +1,220 @@
+
+{% raw %}
+<style>
+  .modal-confirm {		
+    color: #636363;
+    width: 400px;
+  }
+  .modal-confirm .modal-content {
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    font-size: 14px;
+  }
+  .modal-confirm .modal-header {
+    border-bottom: none;   
+    position: relative;
+  }
+  .modal-confirm h4 {
+    text-align: center;
+    font-size: 26px;
+    margin: 30px 0 -10px;
+  }
+  .modal-confirm .close {
+    position: absolute;
+    top: -5px;
+    right: -2px;
+  }
+  .modal-confirm .modal-body {
+    color: #999;
+  }
+  .modal-confirm .modal-footer {
+    border: none;
+    text-align: center;		
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px 15px 25px;
+  }
+  .modal-confirm .modal-footer a {
+    color: #999;
+  }		
+  .modal-confirm .icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 50%;
+    z-index: 9;
+    text-align: center;
+    border: 3px solid #f15e5e;
+  }
+  .modal-confirm .icon-box i {
+    color: #f15e5e;
+    font-size: 46px;
+    display: inline-block;
+    margin-top: 13px;
+  }
+  .modal-confirm .btn, .modal-confirm .btn:active {
+    color: #fff;
+    border-radius: 4px;
+    background: #60c7c1;
+    text-decoration: none;
+    transition: all 0.4s;
+    line-height: normal;
+    min-width: 120px;
+    border: none;
+    min-height: 40px;
+    border-radius: 3px;
+    margin: 0 5px;
+  }
+  .modal-confirm .btn-secondary {
+    background: #c1c1c1;
+  }
+  .modal-confirm .btn-secondary:hover, .modal-confirm .btn-secondary:focus {
+    background: #a8a8a8;
+  }
+  .modal-confirm .btn-danger {
+    background: #f15e5e;
+  }
+  .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+    background: #ee3535;
+  }
+
+</style>
+
+
+<script>
+
+  function deleteRow(e) {
+    e.preventDefault();
+
+    let link = $(e.target).attr('href');
+    if(link === undefined) link = $(e.target).parent().attr('href');
+
+    $("#deleteModal").modal('show');
+
+    $("#btnDelete").unbind('click');
+
+    $("#btnDelete").click((e) => {
+      window.location.href = link;
+    })
+  }
+
+</script>
+
+
+<div id="deleteModal" class="modal fade" aria-modal="true">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="fa fa-times"></i>
+				</div>						
+				<h4 class="modal-title w-100">Excluir</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+				<p>Tem certeza que deseja excluir? Este processo não pode ser desfeito.</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-danger" id="btnDelete">Excluir</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+
+{% if list_url != "" %}
+
+    let add_columns_defs;
+
+    try{
+        add_columns_defs = [...columns_defs]
+    }
+    catch(err){
+        add_columns_defs = []
+    }
+
+    const renderDate = (data) => {
+        let date = new Date(data);
+        if(date.getTime() === date.getTime()){
+            const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+            let formattedDate = date.getDate() + " de " + months[date.getMonth()] + " de " + date.getFullYear();
+            return `<span class='d-none'>${data}</span>${formattedDate}`;
+        }
+        return "--";
+    }
+
+    const table_fields = JSON.parse("{{table_fields|escapejs}}");
+    const columns = table_fields.map((col) => ({"data": col}))
+    let replaceLastColumn = false;
+
+    add_columns_defs = add_columns_defs.map((column) => {
+      if(column["render"] === "date"){
+        column["render"] = function ( data, type, row ) {
+            return renderDate(data);
+        }
+      }
+      if(parseInt(column["targets"]) === columns.length - 1) replaceLastColumn = true;
+      return column;
+    })
+
+    var editURL =  "{% if edit_url != '' %}{% url edit_url '0' %}{% else %} {% endif %}";
+    var deleteURL =  "{% url delete_url '0' %}";
+
+    const changeURL = (url, pk) => {
+        return url.replace('0', pk);
+    }
+
+    let default_columns_defs;
+    if(!replaceLastColumn)
+      default_columns_defs = [{
+          "render": function ( data, type, row ) {
+              return  `<a href="${changeURL(editURL, data)}" class="btn btn-info px-2 py-1"><i class="fa fa-edit"></i></a>
+                      <a href="${changeURL(deleteURL, data)}" onclick="deleteRow(event)" class="btn btn-danger px-2 py-1 btnDelete"><i class="fa fa-times"></i></a>`
+          },
+          "targets": columns.length - 1,
+          "orderable": false
+      }]
+    else
+      default_columns_defs = []
+
+    var config = {
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{% url list_url %}",
+        "columns": columns,
+        "columnDefs": [
+            ...default_columns_defs,
+            ...add_columns_defs
+        ]
+    };
+
+{% endif %}
+
+$(document).ready(function () {
+  let add_config;
+
+  try{
+    add_config = {...config}
+  }
+  catch(err){
+    add_config = {}
+  }
+
+  $.fn.dataTable.moment('DD/MM/YYYY'); 
+  $('#{{table_id}}').DataTable({
+    "language": {
+      "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
+    },
+    "order": [[ 0, "desc" ]],
+    ...add_config
+  });
+});
+
+</script>
+{% endraw %}

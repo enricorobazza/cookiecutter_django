@@ -8,6 +8,7 @@ features:
     enabled: {{cookiecutter.bootstrap|lower}}
     resources:
       - static/bootstrap
+      - static/lib
   - name: custom_accounts
     enabled: {{cookiecutter.custom_accounts|lower}}
     resources:
@@ -17,3 +18,16 @@ features:
     enabled: {{cookiecutter.login_required_middleware|lower}}
     resources:
       - account/middleware.py
+  - name: extras_app
+    enabled: {{cookiecutter.extras_app|lower}}
+    resources:
+      - extras
+  - name: extras_example
+    enabled: {{cookiecutter.extras_example|lower}}
+    resources:
+      - extras/templates/extras/views
+      - extras/views
+      - extras/forms.py
+      - extras/models.py
+      - static/scss/extras
+      

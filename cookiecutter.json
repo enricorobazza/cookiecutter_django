@@ -5,6 +5,8 @@
     "bootstrap": [true, false],
     "custom_accounts": [true, false],
     "login_required_middleware": [true, false],
+    "extras_app": [true, false],
+    "extras_example": [true, false],
     "_copy_without_render": [
         "./.venv/**",
         "./.venv",

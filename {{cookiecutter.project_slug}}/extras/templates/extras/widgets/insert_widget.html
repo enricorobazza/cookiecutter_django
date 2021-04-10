@@ -1,0 +1,102 @@
+{% raw %}
+<div class="modal fade" id="{{widget.name}}_modal" tabindex="-1" role="dialog" aria-labelledby="{{widget.name}}_label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="{{widget.name}}_label">{{widget.title}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            {% include "extras/components/form_render.html" with form=widget.form only_fields=True remove_csrf=True %}
+            <div id="{{widget.name}}_form_errors" class="alert alert-danger d-none"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times mr-1"></i> Fechar</button>
+            <button id="{{widget.name}}_adicionar" type="button" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Adicionar</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 d-flex p-0">
+    <div class="flex-grow-1">
+        {% include 'django/forms/widgets/select.html' %}
+    </div>
+    <div class="ml-1">
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#{{widget.name}}_modal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    $("#{{widget.name}}_adicionar").click((e) => {
+        let icon = $(e.target).find("i")[0];
+
+        let getFormFieldsData = (widget_name) => {
+            let data = {};
+            // Go through all elements on page that matchs #id_{widget_name}_form
+            $(`[id^="id_${widget_name}_form"]`).each((i, e) => {
+                // Elements have the id: #id_{widget_name}-field
+                // But also exists the element: #id_{widget_name}-field-errors
+                // So when length of split('-') returns greater then 2, it is -errors, so ignore
+                if(e.id.split('-').length == 2) {
+                    data[e.id.split('-')[1]] = e.value;
+                    // Cleans errors from all fields
+                    $(`#id_${widget_name}_form-${e.id.split('-')[1]}-errors`).remove();
+                }
+            })
+            return data;
+        }
+        
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const data = getFormFieldsData("{{widget.name}}");
+        
+        // Hides errors
+        $("#{{widget.name}}_form_errors").addClass('d-none');
+
+        // Spinning on button
+        $(icon).attr('class', 'fas fa-circle-notch fa-spin mr-1');
+
+        $.ajax({
+            type: 'POST',
+            url: '{{widget.add_url}}',
+            mode: 'same-origin',
+            headers: { 'X-CSRFToken': csrftoken },
+            data,
+            success: (data) => {
+                $(icon).attr('class', 'fa fa-plus mr-1');
+                if(data.success){
+                    $("#id_{{widget.name}}").append(`<option selected value='${data.content.id}'>${data.content.text}</option>`);
+                    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+                    $('#id_{{widget.name}}').selectpicker('refresh');
+                    $("#{{widget.name}}_modal").modal('hide');
+                    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+                    $('[id^="id_{{widget.name}}_form"]').each((i, e) => {
+                        $(`#${e.id}`).val("");
+                         if($(`#${e.id}`).hasClass('selectpicker')){
+                            $(`#${e.id}`).selectpicker('refresh');
+                        }
+                    })
+                }
+                else {
+                    // Appends Errors for each field
+                    Object.keys(data.errors).forEach(key => {
+                        $(`#id_{{widget.name}}_form-${key}`).parent().append(`<div id='id_{{widget.name}}_form-${key}-errors'><div class='alert alert-danger' style='margin-top: -15px'>` + data.errors[key].join("<br />") + "</div></div>")
+                    })
+                }
+            },
+            error: function (xhr, status, error) {
+                $(icon).attr('class', 'fa fa-plus mr-1');
+                alert(xhr.responseText);
+                $("#{{widget.name}}_form_errors").html('Erro ao inserir, contate um administrador.');
+                $("#{{widget.name}}_form_errors").addClass('d-block');
+            },
+        });
+
+    })
+
+</script>
+{% endraw %}

@@ -1,0 +1,76 @@
+{% raw %}
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block scss %}
+    <link type="text/x-scss" href="{% static 'scss/extras/tables.scss' %}" rel="stylesheet" media="screen"> 
+{% endblock %}
+
+{% block head %}
+    <title>Tarefas Cadastradas</title>
+{% endblock %}
+
+{% block body %} 
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between mb-3">
+            <h3>Tarefas cadastradas</h3>
+            <a href="{% url 'add_task' %}" class="btn btn-secondary"><i class="fa fa-plus"></i></a>
+        </div>
+        <div class="table-responsive">
+            <table id="tasksTable" class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Completa</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        <tr>
+                            <td>{{task.title}}</td>
+                            <td>{{task.category}}</td>
+                            <td>{{task.due_date|default_if_none:"--"}}</td>
+                            <td>
+                                {% if task.completed %}
+                                    <span class="badge badge-success">Feita</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Em progresso</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'edit_task' pk=task.pk %}" class="btn btn-info px-2 py-1"><i class="fa fa-edit"></i></a>
+                                <a href="{% url 'delete_task' pk=task.pk %}" class="btn btn-danger px-2 py-1"><i class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+    var columns_defs = [{
+        "render": function ( data, type, row ) {
+            if(data){
+                return `<span class="badge badge-success">Feita</span>`;
+            }
+            else return `<span class="badge badge-warning">Em progresso</span>`;
+        },
+        "targets": 3,
+        "orderable": false,
+    },
+    {
+        "render": "date",
+        "targets": 2,
+    }
+    ]
+</script>
+    
+{% include "../components/datatable.html" with table_id="tasksTable" %}
+
+{% endblock %}
+{% endraw %}
+

@@ -1,0 +1,33 @@
+@import '../theme.scss';
+
+
+.dataTables_wrapper{
+    width: 100% !important;
+}
+
+.dataTables_length select, .dataTables_filter input{
+    @extend .form-control;
+    padding: 0.15rem;
+    width: auto;
+    display: inline-block;
+}
+
+.dataTables_paginate{
+    @extend .mt-2;
+}
+
+.dataTables_paginate .paginate_button{
+    border: 1px solid gray("100") !important;
+    margin-left: -1px !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+    background: gray("100") !important;
+    color: $info !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+    background: $info !important;
+    color: white !important; 
+}
