@@ -13,3 +13,7 @@ features:
     resources:
       - account
       - static/scss/account
+  - name: login_required_middleware
+    enabled: {{cookiecutter.login_required_middleware|lower}}
+    resources:
+      - account/middleware.py

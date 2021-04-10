@@ -4,6 +4,7 @@
     "heroku": [true, false],
     "bootstrap": [true, false],
     "custom_accounts": [true, false],
+    "login_required_middleware": [true, false],
     "_copy_without_render": [
         "./.venv/**",
         "./.venv",
