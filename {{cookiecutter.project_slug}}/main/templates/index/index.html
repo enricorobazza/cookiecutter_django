@@ -4,10 +4,10 @@
 {% block scss %}{% endblock %}
 
 {% block head %}
-    <title>Welcome to this Template!</title>
+    <title>{% endraw %} {{cookiecutter.project_name}} {% raw %}</title>
 {% endblock %}
 
 {% block body %}
-    <h1>Welcome to template</h1>
+    <h1>Welcome to {% endraw %} {{cookiecutter.project_name}} {% raw %}</h1>
 {% endblock %}
 {% endraw %}
