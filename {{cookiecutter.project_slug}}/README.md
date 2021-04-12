@@ -7,6 +7,6 @@ This project is started with a Django Template containing:
 - [x] Static URL and Static Root setup
 - [x] Compress sass
 - [x] Bootstrap
-- Django_rest_framework
+- [x] Django_rest_framework
 - [x] Pylint
 - [x] .vscode
