@@ -7,6 +7,7 @@
     "login_required_middleware": [true, false],
     "extras_app": [true, false],
     "extras_example": [true, false],
+    "react": [true, false],
     "_copy_without_render": [
         "./.venv/**",
         "./.venv",

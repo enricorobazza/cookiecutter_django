@@ -1,5 +1,8 @@
 {% raw %}
 {% extends '../base.html' %}
+{% endraw %}{% if cookiecutter.react == "True" %}{% raw -%}
+{% load static %}
+{%- endraw %}{%- endif %}{% raw %}
 
 {% block scss %}{% endblock %}
 
@@ -9,5 +12,10 @@
 
 {% block body %}
     <h1>Welcome to {% endraw %} {{cookiecutter.project_name}} {% raw %}</h1>
+    {% endraw %}{% if cookiecutter.react == "True" -%}{% raw %}
+    <div id="root"></div>
+    <script src="{% static 'js/index.bundle.js' %}"></script>
+    {% endraw %}{%- endif %}{% raw %}
+
 {% endblock %}
 {% endraw %}

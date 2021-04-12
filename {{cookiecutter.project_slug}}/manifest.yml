@@ -30,4 +30,11 @@ features:
       - extras/forms.py
       - extras/models.py
       - static/scss/extras
+  - name: react
+    enabled: {{cookiecutter.react|lower}}
+    resources:
+      - package.json
+      - webpack.config.js
+      - .babelrc
+      - front
       
