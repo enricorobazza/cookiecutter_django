@@ -8,6 +8,7 @@
     "extras_app": [true, false],
     "extras_example": [true, false],
     "react": [true, false],
+    "api": [true, false],
     "_copy_without_render": [
         "./.venv/**",
         "./.venv",

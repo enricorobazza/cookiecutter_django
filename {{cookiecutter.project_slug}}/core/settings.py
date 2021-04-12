@@ -42,8 +42,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    {% if cookiecutter.custom_accounts == "True" %}'account',{% endif %}
-    {% if cookiecutter.extras_app == "True" %}'extras',{% endif %}
+    {%- if cookiecutter.custom_accounts == "True" %}
+    'account',
+    {% endif -%}
+    {%- if cookiecutter.extras_app == "True" %}
+    'extras',
+    {% endif -%}
+    {%- if cookiecutter.api == "True" %}
+    'rest_framework',
+    'rest_framework.authtoken',
+    'api',
+    {% endif -%}
     'compressor',
     'main',
 ]
@@ -57,9 +66,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    {% if cookiecutter.login_required_middleware == "True" -%}
+    {%- if cookiecutter.login_required_middleware == "True" %}
     'account.middleware.LoginRequiredMiddleware',
-    {%- endif %}
+    {% endif -%}
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -175,7 +184,19 @@ LOGIN_REQUIRED_IGNORE_PATHS = [
 ]
 {%- endif %}
 
-
 {% if cookiecutter.heroku == "True" -%}
 django_heroku.settings(locals())
 {% endif %}
+
+{% if cookiecutter.api == "True" -%}
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication', 
+    ],
+}
+{% endif %}
+

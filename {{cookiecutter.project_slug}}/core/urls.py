@@ -22,4 +22,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     {%- endif %}
     path('admin/', admin.site.urls),
+    {% if cookiecutter.api == "True" -%}
+    path('api/', include('api.urls')),
+    {%- endif %}
 ]

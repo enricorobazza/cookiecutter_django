@@ -37,4 +37,8 @@ features:
       - webpack.config.js
       - .babelrc
       - front
+  - name: api
+    enabled: {{cookiecutter.api|lower}}
+    resources:
+      - api
       
