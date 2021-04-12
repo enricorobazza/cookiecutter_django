@@ -1,29 +1,29 @@
 features:
   - name: heroku
-    enabled: {{cookiecutter.heroku|lower}}
+    enabled: { { cookiecutter.heroku|lower } }
     resources:
       - runtime.txt
       - Procfile
   - name: bootstrap
-    enabled: {{cookiecutter.bootstrap|lower}}
+    enabled: { { cookiecutter.bootstrap|lower } }
     resources:
       - static/bootstrap
       - static/lib
   - name: custom_accounts
-    enabled: {{cookiecutter.custom_accounts|lower}}
+    enabled: { { cookiecutter.custom_accounts|lower } }
     resources:
       - account
       - static/scss/account
   - name: login_required_middleware
-    enabled: {{cookiecutter.login_required_middleware|lower}}
+    enabled: { { cookiecutter.login_required_middleware|lower } }
     resources:
       - account/middleware.py
   - name: extras_app
-    enabled: {{cookiecutter.extras_app|lower}}
+    enabled: { { cookiecutter.extras_app|lower } }
     resources:
       - extras
   - name: extras_example
-    enabled: {{cookiecutter.extras_example|lower}}
+    enabled: { { cookiecutter.extras_example|lower } }
     resources:
       - extras/templates/extras/views
       - extras/views
@@ -31,14 +31,14 @@ features:
       - extras/models.py
       - static/scss/extras
   - name: react
-    enabled: {{cookiecutter.react|lower}}
+    enabled: { { cookiecutter.react|lower } }
     resources:
       - package.json
       - webpack.config.js
       - .babelrc
       - front
+      - .eslintrc.json
   - name: api
-    enabled: {{cookiecutter.api|lower}}
+    enabled: { { cookiecutter.api|lower } }
     resources:
       - api
-      
